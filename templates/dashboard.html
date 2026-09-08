@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% block title %}Dashboard{% endblock %}{% block content %}
+<section class="hero"><div><h1>Writing Monitoring Dashboard</h1>
+<p>Flask receives processed handwriting metrics, stores them in SQLite and visualizes the session.</p></div>
+<div class="actions"><form method="post" action="/api/simulate"><button>▶ Run Demo Session</button></form>
+<form method="post" action="/api/reset"><button class="danger">Reset Data</button></form></div></section>
+<section class="cards">
+<div><span>Writing Quality</span><strong>{{latest.quality_score if latest else '—'}}<small>{% if latest %}/100{% endif %}</small></strong></div>
+<div><span>Latest Stroke Amplitude</span><strong>{{"%.2f"|format(strokes[0].amplitude_index) if strokes else '—'}}</strong></div>
+<div><span>Freeze-like Events</span><strong>{{latest.freeze_events if latest else 0}}</strong></div>
+<div><span>Haptic Cues</span><strong>{{latest.cue_events if latest else 0}}</strong></div></section>
+<section class="grid"><div class="panel"><h2>Stroke Amplitude</h2><canvas id="chart"></canvas></div>
+<div class="panel"><h2>Recent Events</h2>{% for e in events %}<div class="event"><i></i><div><b>{{e.event_type.replace('_',' ')}}</b><small>{{e.timestamp}}</small></div></div>{% else %}<p>No events yet.</p>{% endfor %}</div></section>
+<div class="panel"><h2>Latest Stroke Records</h2><table><tr><th>Time</th><th>Amplitude</th><th>Speed</th><th>Pressure</th><th>Distance</th></tr>
+{% for s in strokes %}<tr><td>{{s.timestamp}}</td><td>{{"%.2f"|format(s.amplitude_index)}}</td><td>{{"%.2f"|format(s.speed_index)}}</td><td>{{"%.2f"|format(s.pressure)}}</td><td>{{"%.2f"|format(s.distance_mm)}} mm</td></tr>{% else %}<tr><td colspan="5">No stroke data yet.</td></tr>{% endfor %}</table></div>
+<script>const d={{strokes|tojson}};new Chart(document.getElementById('chart'),{type:'line',data:{labels:d.map((x,i)=>'Stroke '+(i+1)),datasets:[{data:d.map(x=>x.amplitude_index),tension:.25,borderWidth:2,pointRadius:3}]},options:{scales:{y:{min:0,max:1}},plugins:{legend:{display:false}}}});</script>{% endblock %}

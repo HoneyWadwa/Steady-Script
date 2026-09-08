@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% block title %}Calibration{% endblock %}{% block content %}
+<section class="hero"><div><label>PERSONALIZED THRESHOLDS</label><h1>Calibration</h1><p>Engineering parameters for the prototype; not clinical cut-offs.</p></div></section>
+<form class="panel form" method="post">
+<label>Baseline amplitude<input name="baseline_amplitude" type="number" step=".01" value="{{calibration.baseline_amplitude}}"></label>
+<label>Baseline speed<input name="baseline_speed" type="number" step=".01" value="{{calibration.baseline_speed}}"></label>
+<label>Small-stroke threshold<input name="small_stroke_threshold" type="number" step=".01" min="0" max="1" value="{{calibration.small_stroke_threshold}}"></label>
+<label>Freeze threshold<input name="freeze_threshold" type="number" step=".01" min="0" max="1" value="{{calibration.freeze_threshold}}"></label>
+<label>Freeze duration (ms)<input name="freeze_duration_ms" type="number" min="100" value="{{calibration.freeze_duration_ms}}"></label>
+<button>Save Calibration</button></form>{% endblock %}

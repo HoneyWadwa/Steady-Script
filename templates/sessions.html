@@ -1,0 +1,4 @@
+{% extends "base.html" %}{% block title %}Sessions{% endblock %}{% block content %}
+<section class="hero"><div><label>SESSION HISTORY</label><h1>Writing Sessions</h1><p>Records persisted in SQLite.</p></div></section>
+<div class="panel"><table><tr><th>ID</th><th>Started</th><th>Duration</th><th>Quality</th><th>Freeze</th><th>Cues</th><th></th></tr>
+{% for s in sessions %}<tr><td>#{{s.id}}</td><td>{{s.started_at}}</td><td>{{s.duration_s}} s</td><td><b>{{s.quality_score}}</b></td><td>{{s.freeze_events}}</td><td>{{s.cue_events}}</td><td><a href="/session/{{s.id}}">Open →</a></td></tr>{% else %}<tr><td colspan="7">No sessions yet.</td></tr>{% endfor %}</table></div>{% endblock %}
